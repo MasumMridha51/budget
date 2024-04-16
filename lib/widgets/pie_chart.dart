@@ -9,23 +9,15 @@ enum LegendShape { circle, rectangle }
 
 class MyPieChart extends StatefulWidget {
   final List<BudgetItem> myBudgetItems;
-  MyPieChart({super.key, required this.myBudgetItems});
 
-  mydata() {
-    // Creating a map from the list
-    Map<String, double> itemMap = {};
-
-    for (var item in myBudgetItems) {
-      itemMap[item.name] = item.amount;
-    }
-    return itemMap;
-  }
+  const MyPieChart({super.key, required this.myBudgetItems});
 
   @override
   State<MyPieChart> createState() => _MyPieChartState();
 }
 
 class _MyPieChartState extends State<MyPieChart> {
+
   int key = 0;
 
   final dataMaps = <String, double>{
@@ -67,10 +59,25 @@ class _MyPieChartState extends State<MyPieChart> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+
+  }
+
+  Map<String, double> myData() {
+    Map<String, double> itemMap = {};
+
+    for (var item in widget.myBudgetItems) {
+      itemMap[item.name] = item.amount;
+    }
+    return itemMap;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return PieChart(
       key: ValueKey(key),
-      dataMap: mydata(),
+      dataMap: myData(),
       animationDuration: const Duration(milliseconds: 800),
       chartLegendSpacing: 10,
       chartRadius: math.min(MediaQuery.of(context).size.width / 3.2, 300),
@@ -110,3 +117,5 @@ class _MyPieChartState extends State<MyPieChart> {
     );
   }
 }
+
+
